@@ -1,4 +1,4 @@
-package main
+package types
 
 import (
 	pb "github.com/luizmoitinho/api-grpc-mongodb/proto"
@@ -13,5 +13,10 @@ type BlogItem struct {
 }
 
 func documentToBlog(data *BlogItem) *pb.Blog {
-
+	return &pb.Blog{
+		Id:       data.ID.Hex(),
+		AuthorId: data.AuthorId,
+		Title:    data.Title,
+		Content:  data.Content,
+	}
 }

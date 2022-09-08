@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package blogl;
+package blog;
 
 option go_package = "github.com/luizmoitinho/api-grpc-mongodb/proto";
 
