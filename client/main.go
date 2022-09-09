@@ -27,7 +27,7 @@ func clientReadBlog(c pb.BlogServiceClient) *pb.Blog {
 	log.Println("----- clientReadBlog was invoked ------")
 
 	req := &pb.BlogId{
-		Id: "631a9c0bcfaef11492da3955",
+		Id: "631a9c0bcfaef11492da3a955",
 	}
 
 	res, err := c.ReadBlog(context.Background(), req)

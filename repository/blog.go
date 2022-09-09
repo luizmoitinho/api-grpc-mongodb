@@ -51,3 +51,28 @@ func Get(ctx context.Context, oid primitive.ObjectID) (*types.BlogItem, error) {
 
 	return data, nil
 }
+
+func Update(ctx context.Context, oid primitive.ObjectID, data *types.BlogItem) error {
+
+	res, err := collection.UpdateOne(
+		ctx,
+		bson.M{"_id": oid},
+		bson.M{"$set": data},
+	)
+
+	if err != nil {
+		return status.Errorf(
+			codes.Internal,
+			"cannot not update",
+		)
+	}
+
+	if res.MatchedCount == 0 {
+		return status.Errorf(
+			codes.NotFound,
+			"cannot find blog with id",
+		)
+	}
+
+	return nil
+}
