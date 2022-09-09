@@ -19,11 +19,28 @@ func main() {
 	defer conn.Close()
 
 	client := pb.NewBlogServiceClient(conn)
-	clientCreateBlog(client)
+	//clientCreateBlog(client)
+	clientReadBlog(client)
+}
+
+func clientReadBlog(c pb.BlogServiceClient) *pb.Blog {
+	log.Println("----- clientReadBlog was invoked ------")
+
+	req := &pb.BlogId{
+		Id: "631a9c0bcfaef11492da3955",
+	}
+
+	res, err := c.ReadBlog(context.Background(), req)
+	if err != nil {
+		log.Fatalf("unexpected error: %v\n", err)
+	}
+
+	log.Printf("blog was read: %v", res)
+	return res
 }
 
 func clientCreateBlog(c pb.BlogServiceClient) string {
-	log.Println("----- createBlog was invoked ------")
+	log.Println("----- clientCreateBlog was invoked ------")
 
 	blog := &pb.Blog{
 		AuthorId: "Moitinho2",
