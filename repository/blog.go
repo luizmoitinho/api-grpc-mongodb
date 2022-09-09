@@ -13,7 +13,6 @@ import (
 )
 
 func InsertOne(ctx context.Context, data types.BlogItem) (*pb.BlogId, error) {
-	collection := GetCollection()
 	res, err := collection.InsertOne(ctx, data)
 	if err != nil {
 		return nil, status.Errorf(

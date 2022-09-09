@@ -23,7 +23,3 @@ func MongoConfigCollection() {
 
 	collection = client.Database("blogdb").Collection("blog")
 }
-
-func GetCollection() *mongo.Collection {
-	return collection
-}

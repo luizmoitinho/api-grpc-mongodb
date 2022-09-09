@@ -10,7 +10,7 @@ import (
 
 func CreateBlog(ctx context.Context, in *pb.Blog) (*pb.BlogId, error) {
 	data := types.BlogItem{
-		AuthorId: in.AuthorId,
+		AuthorID: in.AuthorId,
 		Title:    in.Title,
 		Content:  in.Content,
 	}
