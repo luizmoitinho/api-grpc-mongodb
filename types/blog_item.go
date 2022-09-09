@@ -12,7 +12,7 @@ type BlogItem struct {
 	Content  string             `bson:"content"`
 }
 
-func documentToBlog(data *BlogItem) *pb.Blog {
+func DocumentToBlog(data *BlogItem) *pb.Blog {
 	return &pb.Blog{
 		Id:       data.ID.Hex(),
 		AuthorId: data.AuthorID,

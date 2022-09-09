@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	"github.com/luizmoitinho/api-grpc-mongodb/types"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -32,4 +33,21 @@ func InsertOne(ctx context.Context, data types.BlogItem) (*pb.BlogId, error) {
 	return &pb.BlogId{
 		Id: oid.Hex(),
 	}, nil
+}
+
+func Get(ctx context.Context, oid primitive.ObjectID) (*types.BlogItem, error) {
+	data := &types.BlogItem{}
+
+	filter := bson.M{"_id": oid}
+
+	res := collection.FindOne(ctx, filter)
+
+	if err := res.Decode(data); err != nil {
+		return nil, status.Errorf(
+			codes.NotFound,
+			"cannot find blog with the id provided",
+		)
+	}
+
+	return data, nil
 }
