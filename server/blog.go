@@ -26,3 +26,14 @@ func (s *Server) UpdateBlog(ctx context.Context, in *pb.Blog) (*emptypb.Empty, e
 	data, err := service.UpdateBlog(ctx, in)
 	return data, err
 }
+
+func (s *Server) ListBlog(in *emptypb.Empty, stream pb.BlogService_ListBlogServer) error {
+	log.Printf("ListBlog was invoked with %v\n", in)
+	err := service.ListBlog(in, stream)
+	return err
+}
+
+func (s *Server) DeleteBlog(ctx context.Context, in *pb.Blog) (*emptypb.Empty, error) {
+	log.Printf("DeleteBlog was invoked with %v\n", in)
+	return service.DeleteBlog(ctx, in)
+}

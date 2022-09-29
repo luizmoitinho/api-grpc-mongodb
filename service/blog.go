@@ -53,3 +53,27 @@ func UpdateBlog(ctx context.Context, in *pb.Blog) (*emptypb.Empty, error) {
 	err = repository.Update(ctx, oid, data)
 	return &emptypb.Empty{}, err
 }
+
+func ListBlog(in *emptypb.Empty, stream pb.BlogService_ListBlogServer) error {
+	ctx := context.Background()
+	err := repository.List(ctx, stream)
+	return err
+}
+
+func DeleteBlog(ctx context.Context, in *pb.Blog) (*emptypb.Empty, error) {
+	oid, err := primitive.ObjectIDFromHex(in.Id)
+	if err != nil {
+		return nil, status.Errorf(
+			codes.Internal,
+			"cannot parse ID",
+		)
+	}
+
+	err = repository.Delete(ctx, oid)
+	if err != nil {
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
+
+}
