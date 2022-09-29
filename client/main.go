@@ -20,7 +20,8 @@ func main() {
 
 	client := pb.NewBlogServiceClient(conn)
 	//clientCreateBlog(client)
-	clientReadBlog(client)
+	//clientReadBlog(client)
+	clientUpdateBlog(client, "631a9c0bcfaef11492da3955")
 }
 
 func clientReadBlog(c pb.BlogServiceClient) *pb.Blog {
@@ -55,4 +56,20 @@ func clientCreateBlog(c pb.BlogServiceClient) string {
 
 	log.Printf("blog was created: %v", res.Id)
 	return res.Id
+}
+
+func clientUpdateBlog(c pb.BlogServiceClient, id string) {
+	log.Println("----- clientUpdateBlog was invoked ------")
+
+	blog := &pb.Blog{
+		Id:       id,
+		AuthorId: "Not Luiz",
+		Title:    "A new title",
+		Content:  "Content of the fisrt blog, with some awsome additions!",
+	}
+
+	_, err := c.UpdateBlog(context.Background(), blog)
+	if err != nil {
+		log.Fatalf("error happened while updating: %v \n", err)
+	}
 }
