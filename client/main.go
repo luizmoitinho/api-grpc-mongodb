@@ -25,6 +25,7 @@ func main() {
 	//clientReadBlog(client)
 	//clientUpdateBlog(client, "631a9c0bcfaef11492da3955")
 	listBlogClient(client)
+	deleteBlogClient(client, "631a9c0bcfaef11492da3955")
 }
 
 func clientReadBlog(c pb.BlogServiceClient) *pb.Blog {
@@ -95,4 +96,14 @@ func listBlogClient(c pb.BlogServiceClient) {
 
 		log.Println(res)
 	}
+}
+func deleteBlogClient(c pb.BlogServiceClient, id string) {
+	log.Println("----- deleteBlogClient was invoked ------")
+
+	_, err := c.DeleteBlog(context.Background(), &pb.BlogId{Id: id})
+	if err != nil {
+		log.Fatalf("error while deleting: %v\n", err)
+	}
+	log.Println("blog was deleted")
+
 }
