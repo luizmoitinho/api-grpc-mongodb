@@ -2,11 +2,13 @@ package main
 
 import (
 	"context"
+	"io"
 	"log"
 
 	pb "github.com/luizmoitinho/api-grpc-mongodb/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 var addr string = "0.0.0.0:50051"
@@ -21,7 +23,8 @@ func main() {
 	client := pb.NewBlogServiceClient(conn)
 	//clientCreateBlog(client)
 	//clientReadBlog(client)
-	clientUpdateBlog(client, "631a9c0bcfaef11492da3955")
+	//clientUpdateBlog(client, "631a9c0bcfaef11492da3955")
+	listBlogClient(client)
 }
 
 func clientReadBlog(c pb.BlogServiceClient) *pb.Blog {
@@ -44,9 +47,9 @@ func clientCreateBlog(c pb.BlogServiceClient) string {
 	log.Println("----- clientCreateBlog was invoked ------")
 
 	blog := &pb.Blog{
-		AuthorId: "Moitinho2",
-		Title:    "My First Blog",
-		Content:  "Content of the first blog",
+		AuthorId: "Teste 3",
+		Title:    "My Third Blog",
+		Content:  "Content of the Third blog",
 	}
 
 	res, err := c.CreateBlog(context.Background(), blog)
@@ -65,11 +68,31 @@ func clientUpdateBlog(c pb.BlogServiceClient, id string) {
 		Id:       id,
 		AuthorId: "Not Luiz",
 		Title:    "A new title",
-		Content:  "Content of the fisrt blog, with some awsome additions!",
+		Content:  "Content of the fisrt blog, with some awesome additions!",
 	}
 
 	_, err := c.UpdateBlog(context.Background(), blog)
 	if err != nil {
 		log.Fatalf("error happened while updating: %v \n", err)
+	}
+}
+
+func listBlogClient(c pb.BlogServiceClient) {
+	log.Println("----- listBlogClient was invoked ------")
+	stream, err := c.ListBlog(context.Background(), &emptypb.Empty{})
+	if err != nil {
+		log.Fatalf("error while calling ListBlog: %v \n", err)
+	}
+	for {
+		res, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+
+		if err != nil {
+			log.Fatalf("something happened: %v", err)
+		}
+
+		log.Println(res)
 	}
 }
